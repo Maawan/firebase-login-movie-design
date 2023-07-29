@@ -11,6 +11,13 @@ import UserContext from '../Context/UserContext'
 firebase.initializeApp(firebaseConfig);
 const auth = getAuth();
 const Signup = () => {
+
+  const handleEnter = (event) => {
+    if (event.key === "Enter") {
+        handleSubmit();
+    }
+  };
+
   const navigate = useNavigate();
   const [loading , setLoading] = useContext(ProcessingContext);
   const [user , setUser] = useContext(UserContext);
@@ -78,7 +85,7 @@ const Signup = () => {
             <input placeholder="Create a Password" type="password"  name="" id="" value={pass} onChange={(e)=>{
               setPass(e.target.value);
             }}/>
-            <input placeholder="Re- enter Password" type="password"  name="" id="" value={repass} onChange={(e)=>{
+            <input onKeyDown={handleEnter} placeholder="Re- enter Password" type="password"  name="" id="" value={repass} onChange={(e)=>{
               setRepass(e.target.value);
             }}/>
             <button onClick={(e) => {

@@ -10,6 +10,13 @@ import ProcessingContext from '../Context/ProcessingContext';
 firebase.initializeApp(firebaseConfig)
 const auth = getAuth();
 const Signin = () => {
+
+  const handleEnter = (event) => {
+    if (event.key === "Enter") {
+        handleSubmit();
+    }
+  };
+
   const navigate = useNavigate();
   const [loading , setLoading] = useContext(ProcessingContext);
   const [email , setEmail] = useState("");
@@ -50,10 +57,11 @@ const Signin = () => {
             <input placeholder="Enter your E-mail Address" type="email"  name="" id="" value={email} onChange={(e)=>{
               setEmail(e.target.value);
             }}/>
-            <input placeholder="Create a Password" type="password"  name="" id="" value={pass} onChange={(e)=>{
+            <input onKeyDown={handleEnter} placeholder="Create a Password" type="password"  name="" id="" value={pass} onChange={(e)=>{
               setPass(e.target.value);
+
             }}/>
-            <button onClick={(e)=>{
+            <button  onClick={(e)=>{
               handleSubmit();
             }}>Signin</button>
             <p>Don't have an Account ? <Link to="/signup" style={{textDecoration:"none"}}><span>Register</span></Link></p>
