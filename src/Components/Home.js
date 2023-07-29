@@ -7,6 +7,7 @@ import firebase from 'firebase/compat/app';
 import { getAuth, signOut } from "firebase/auth";
 import firebaseConfig from '../Utils/FirebaseConfig'
 import { toast } from 'react-toastify'
+import Table from './Table'
 
 
 firebase.initializeApp(firebaseConfig)
@@ -37,6 +38,7 @@ const Home = () => {
   }
 
   return (
+    <div>
     <div className="navbar glass">
       <div className="section1">
         <img src="./movix-logo.png"  />
@@ -55,6 +57,8 @@ const Home = () => {
        
         
       </div>
+    </div>
+        <Table />
     </div>
   )
 }

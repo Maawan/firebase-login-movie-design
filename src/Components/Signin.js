@@ -1,14 +1,16 @@
 import React, { useContext, useState } from 'react'
 import {Link} from 'react-router-dom'
 import firebase from 'firebase/compat/app';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword , GoogleAuthProvider , signInWithPopup } from "firebase/auth";
 import firebaseConfig from '../Utils/FirebaseConfig';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../Context/UserContext';
 import ProcessingContext from '../Context/ProcessingContext';
+import GoogleButton from 'react-google-button'
 firebase.initializeApp(firebaseConfig)
 const auth = getAuth();
+const provider = new GoogleAuthProvider();
 const Signin = () => {
 
   const handleEnter = (event) => {
@@ -17,6 +19,7 @@ const Signin = () => {
     }
   };
 
+  
   const navigate = useNavigate();
   const [loading , setLoading] = useContext(ProcessingContext);
   const [email , setEmail] = useState("");
@@ -33,22 +36,57 @@ const Signin = () => {
       const user = userCredential.user;
       setUser({
         email : user.email,
-        id : user.uid
+        uid : user.uid
       })
       navigate("/")
-    // ...
-  })
-  .catch((error) => {
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      toast(errorMessage , {
+        type : "warning"
+      })
+      setUser(null);
+      setLoading(false);
+    });
+  }
+  const handleGoogleSignIn = () => {
+    setLoading(true);
+    signInWithPopup(auth, provider)
+  .then((result) => {
+    
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    
+    const user = result.user;
+    setUser({
+      email : user.email,
+      uid : user.uid
+    })
+    toast("Congratulation !" , {
+      type : "success"
+    })
+    navigate("/");
+    setLoading(false);
+  }).catch((error) => {
+    // Handle Errors here.
     const errorCode = error.code;
     const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+    setUser(null);
+    setLoading(false);
     toast(errorMessage , {
       type : "warning"
     })
-    setUser(null);
-    setLoading(false);
   });
-  }
 
+  }
+  
   return (
     <div className="main-container glass">
         <div className="container glass2">
@@ -64,6 +102,7 @@ const Signin = () => {
             <button  onClick={(e)=>{
               handleSubmit();
             }}>Signin</button>
+            <GoogleButton type='light' onClick={() => handleGoogleSignIn()}/>
             <p>Don't have an Account ? <Link to="/signup" style={{textDecoration:"none"}}><span>Register</span></Link></p>
         </div>
     </div>
