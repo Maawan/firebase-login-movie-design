@@ -10,25 +10,31 @@ import { useState } from 'react';
 import UserContext from './Context/UserContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Add from './Components/Add'
+import UpdateContext from './Context/UpdateContext';
+
 
 const App = () => {
   const loading = useState(false);
+  const update = useState(null);
   const user = useState(null);
   return (
+    <UpdateContext.Provider value={update} >
     <UserContext.Provider value={user}>
     <ProcessingContext.Provider value={loading}>
     <Router>
       <Routes>
-       
-        <Route path="/" element={<Home/>} />
+       <Route path="/" element={<Home/>} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/add" element={<Add />} />
       </Routes>
     </Router>
       <Loading />
       <ToastContainer />
     </ProcessingContext.Provider>
     </UserContext.Provider>
+    </UpdateContext.Provider>
   );
 }
 

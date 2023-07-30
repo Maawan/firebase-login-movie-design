@@ -58,7 +58,8 @@ const Home = () => {
         
       </div>
     </div>
-        {/* <Table /> */}
+        (user != null) ? (<Table />) : (null)
+        
     </div>
   )
 }

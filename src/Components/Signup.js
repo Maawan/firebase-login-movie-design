@@ -41,7 +41,7 @@ const Signup = () => {
     if(email === ""){
       return toast("Email should not be empty" , {
         type : "warning"
-      })
+      })  
     }
     setLoading(true);
     createUserWithEmailAndPassword(auth, email, pass)

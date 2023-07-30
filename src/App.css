@@ -83,7 +83,7 @@ Link{
   background: linear-gradient(135deg, rgba(255 , 255 , 255 , 0.1) , rgba(255 , 255, 255 , 0));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  
+
   border: 1px solid rgba(255 , 255 , 255 , 0.18);
   box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37);
 }
@@ -95,6 +95,8 @@ Link{
   box-shadow: 0 8px 32px 0 rgba(0,0,0,0.57);
   transition: all 1s;
 }
+
+
 .glass2:hover{
 }
 #logo{
@@ -110,6 +112,16 @@ Link{
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+input[type=file]{
+  height: 100px;
+  background-position: center;
+  background-size: cover;
+  width: 100px;
+  margin-top: 20px;
+  padding-left: 100px;
+  border: 1px solid white;
 }
 
 .container h4{
@@ -182,16 +194,23 @@ span{
 span:hover{
   text-decoration: none;
 
+
+}
+.add-button img{
+  height: 60%;
+  
+  margin: auto;
 }
 span:active{
   text-decoration: none;
 }
 .movie-container{
-  width: 700px;
+  max-width: 700px;
   margin: auto;
   margin-top: 70px;
   border: 0.5px solid white;
   border-radius: 20px;
+  outline: 10px transparent;
 }
 .item{
   display: flex;
@@ -212,6 +231,27 @@ span:active{
   justify-content: center;
   align-items: center;
   display: flex;
+}
+.add-button{
+  width: 70px;
+  height: 70px;
+  border: 1px solid white;
+  position: absolute;
+  bottom: 0;
+  border-radius: 20px;
+  right: 0;
+  margin-right: 40px;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-transition: all 250ms ease;
+}
+.add-button:hover{
+  border: 4px dashed #e7823b;
+}
+.add-button:active{
+  border: 5px solid #e7823b;
 }
 .sub-item-1 img{
   height: 100%;
