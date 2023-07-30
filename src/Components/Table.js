@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import firebase from "firebase/compat/app";
-import { getDatabase, ref, set, onValue } from "firebase/database";
+import { getDatabase, ref, set, onValue , remove } from "firebase/database";
 import firebaseConfig from "../Utils/FirebaseConfig";
 import UserContext from "../Context/UserContext";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import UpdateContext from "../Context/UpdateContext";
+import ProcessingContext from "../Context/ProcessingContext";
+import { toast } from "react-toastify";
 firebase.initializeApp(firebaseConfig);
 const database = getDatabase();
 
@@ -14,8 +16,10 @@ const Table = () => {
   const [user, setUser] = useContext(UserContext);
   const [dataFromDB, setDataFromDB] = useState();
   const [update , setUpdate] = useContext(UpdateContext);
+  const [loading , setLoading] = useContext(ProcessingContext)
   const check = () => {
     if (user !== null) {
+      setLoading(true);
       const starCountRef = ref(database, "users/" + user.uid);
       onValue(starCountRef, (snapshot) => {
         const data = snapshot.val();
@@ -23,7 +27,7 @@ const Table = () => {
         console.log("Done...");
 
         setDataFromDB(data);
-        
+        setLoading(false);
         
       });
     }
@@ -32,6 +36,24 @@ const Table = () => {
   useEffect(() => {
     check();
   }, []);
+
+  const handleDelete = async (key) => {
+    setLoading(true);
+    const nodeRef = await ref(database, "users/"+user.uid+"/"+key);
+    remove(nodeRef).then( () => {
+        setLoading(false);
+        toast("Deleted Successfully !" , {
+            type: "success"
+        })
+    }
+
+    ).catch((error) => {
+        setLoading(true);
+        toast(error , {
+            type : "warning"
+        })
+    })
+  }
 
   return (
     <div>
@@ -60,7 +82,7 @@ const Table = () => {
                 (dataFromDB != null) ? (Object.keys(dataFromDB).map((key) => (
                     <div className="item2">
               <div className="sub-item-1">
-                <img src={dataFromDB[key].img} alt="" />
+                <img src={dataFromDB[key].img === "" ? "https://movienewsletters.net/photos/000000h1.jpg" : dataFromDB[key].img} alt="" />
               </div>
               <div className="sub-item-2">
                 <h3>{dataFromDB[key].name}</h3>
@@ -76,7 +98,9 @@ const Table = () => {
                     });
                     navigate("/add");
                 }} />
-                <AiFillDelete />
+                <AiFillDelete  onClick={(e) => {
+                    handleDelete(key);
+                }}/>
               </div>
             </div>
                 ))) : (null)
