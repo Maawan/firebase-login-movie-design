@@ -56,6 +56,10 @@ const Signup = () => {
     toast("Congratulation ! You are Registered" , {
       type : "success"
     })
+    localStorage.setItem("login" , JSON.stringify({
+      email : user.email,
+      uid : user.uid
+    }));
     navigate("/");
   })
   .catch((error) => {
