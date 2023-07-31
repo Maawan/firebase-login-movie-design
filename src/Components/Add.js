@@ -102,11 +102,19 @@ const Add = () => {
     uploadFile(file);
   };
 
+  useEffect(() => {
+    const loginInfo = localStorage.getItem("login");
+    if(loginInfo !== undefined && loginInfo !== null && loginInfo !== "null"){
+      setUser(JSON.parse(loginInfo));
+      
+    }else{
+      navigate("/")
+    }
+  },[])
+
   return (
     <div>
-      {user == null ? (
-        <Navigate to="/" />
-      ) : (
+      
         <div class="main-container glass">
           <div className="container glass2">
             <input
@@ -154,7 +162,7 @@ const Add = () => {
             </button>
           </div>
         </div>
-      )}
+      
     </div>
   );
 };

@@ -24,11 +24,8 @@ const Table = () => {
       onValue(starCountRef, (snapshot) => {
         const data = snapshot.val();
         console.log(data);
-        console.log("Done...");
-
         setDataFromDB(data);
         setLoading(false);
-        
       });
     }
   };

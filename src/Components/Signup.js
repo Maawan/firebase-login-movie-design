@@ -1,4 +1,4 @@
-import React, { useContext , useState } from 'react'
+import React, { useContext , useEffect, useState } from 'react'
 import {Link} from 'react-router-dom'
 import ProcessingContext from '../Context/ProcessingContext'
 import firebase from 'firebase/compat/app'
@@ -25,6 +25,13 @@ const Signup = () => {
   const [pass , setPass] = useState("");
   const [repass , setRepass] = useState(""); 
   
+  useEffect(()=>{
+    const loginInfo = localStorage.getItem("login");
+    if(loginInfo !== null && loginInfo !== undefined && loginInfo !== "null"){
+      setUser(JSON.parse(loginInfo));
+      navigate("/");
+    }
+  },[])
 
   const handleSubmit = (e) => {
     e.preventDefault();
