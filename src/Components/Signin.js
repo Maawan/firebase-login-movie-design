@@ -87,6 +87,13 @@ const Signin = () => {
           email: user.email,
           uid: user.uid,
         });
+        localStorage.setItem(
+          "login",
+          JSON.stringify({
+            email: user.email,
+            uid: user.uid,
+          })
+        );
         toast("Congratulation !", {
           type: "success",
         });
