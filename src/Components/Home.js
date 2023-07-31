@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import ProcessingContext from '../Context/ProcessingContext'
@@ -14,9 +14,14 @@ firebase.initializeApp(firebaseConfig)
 const auth = getAuth;
 const Home = () => {
 
-  
-
   const [user  ,setUser] = useContext(UserContext)
+  useEffect(() => {
+    const loginInfo = localStorage.getItem("login");
+    if(loginInfo !== undefined && loginInfo !== null){
+      setUser(JSON.parse(loginInfo));
+    }
+  } , [])
+
   const [loading , setLoading] = useContext(ProcessingContext);  
   
   
@@ -29,6 +34,7 @@ const Home = () => {
           })
           setLoading(false);
           setUser(null);
+          localStorage.setItem("login" , null);
       }).catch((error) => {
           toast("Oops ! Went into some Issue" , {
             type : "warning"
@@ -49,7 +55,8 @@ const Home = () => {
           user == null ? (<>
             <Link to="/signup"><h3>Register</h3></Link>
             <Link to="/signin"><h3>Login</h3></Link>
-            </>) : ( <h3 onClick={(e) => {
+            </>) : ( <h3 
+            onClick={(e) => {
               handleSignOut();
             }}>Signout</h3>)
         }

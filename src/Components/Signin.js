@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {Link} from 'react-router-dom'
 import firebase from 'firebase/compat/app';
 import { getAuth, signInWithEmailAndPassword , GoogleAuthProvider , signInWithPopup } from "firebase/auth";
@@ -18,13 +18,14 @@ const Signin = () => {
         handleSubmit();
     }
   };
-
+  const [user , setUser] = useContext(UserContext);
   
+  
+
   const navigate = useNavigate();
   const [loading , setLoading] = useContext(ProcessingContext);
   const [email , setEmail] = useState("");
   const [pass , setPass] = useState("");
-  const [user , setUser] = useContext(UserContext);
   const handleSubmit = () => {
     setLoading(true);
     signInWithEmailAndPassword(auth, email, pass)
@@ -38,6 +39,10 @@ const Signin = () => {
         email : user.email,
         uid : user.uid
       })
+      localStorage.setItem("login" , JSON.stringify({
+        email : user.email,
+        uid : user.uid
+      }));
       navigate("/")
       // ...
     })
